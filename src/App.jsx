@@ -1,17 +1,16 @@
+import { Suspense } from 'react';
 import './App.css';
-import Badge from 'react-bootstrap/Badge';
-import Button from 'react-bootstrap/Button';
+import Loading from './components/loading/Loading';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './routes/PublicRoutes/PublicRoutes';
 
 function App() {
     return (
-        <div>
-            <h1>
-                Example heading
-                <Badge bg="secondary" as={Button}>
-                    New
-                </Badge>
-            </h1>
-        </div>
+        <>
+            <Suspense fallback={<Loading />}>
+                <RouterProvider router={router}></RouterProvider>
+            </Suspense>
+        </>
     );
 }
 

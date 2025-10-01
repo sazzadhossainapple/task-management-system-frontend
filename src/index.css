@@ -1,18 +1,14 @@
-:root {
-    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap');
 
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+:root {
+    --primary-color: #251e73;
+    --secondary-color: rgb(244 244 244);
 }
 
-*,
-*::before,
-*::after {
+* {
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 body {
@@ -30,15 +26,87 @@ h5,
 h6,
 p,
 address {
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 li {
-    list-style: none;
+    list-style: none !important;
 }
 a {
-    text-decoration: none;
+    text-decoration: none !important;
+}
+
+.dashboard-title {
+    color: #102048;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+.btns {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    border-radius: 10px;
+    padding: 6px 20px !important;
+    border-left: 1px solid #1e2772;
+    box-shadow: 0px 5px 5px #2d389e7a;
+    background-color: var(--primary-color) !important;
+    color: #ffffff !important;
+}
+
+.btn-search {
+    background-color: var(--primary-color) !important;
+}
+.table {
+    border-collapse: separate;
+    border-spacing: 0 20px;
+}
+
+.table-th {
+    background-color: var(--primary-color) !important;
+    color: #f6f4ff !important;
+}
+
+.table-th {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    text-transform: capitalize !important;
+}
+.table-text {
+    font-size: 12px !important;
+    color: #212529 !important;
+}
+.modal-title {
+    font-size: 18px;
+    font-weight: 700 !important;
+    color: var(--primary-color) !important;
+}
+.modal-second-title {
+    font-size: 16px !important;
+    line-height: 42px !important;
+    font-weight: 700 !important;
+    color: #1e2772 !important;
+}
+.select-form {
+    font-size: 14px !important;
+}
+
+.date-text {
+    font-size: 14px !important;
+}
+
+.btn-modal {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    border-radius: 10px;
+    padding: 10px 24px !important;
+    border-left: 1px solid #1e2772 !important;
+    box-shadow: 0px 5px 5px #2d389e7a !important;
+    background-color: #1e2772 !important;
+    color: #ffffff !important;
+}
+.tox:not([dir='rtl']) .tox-statusbar__branding {
+    margin-left: 2ch;
+    display: none !important;
 }
 
 @media only screen and (min-width: 250px) and (max-width: 575px) {

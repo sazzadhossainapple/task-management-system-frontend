@@ -1,0 +1,86 @@
+/* login css start */
+.login-contanier {
+    background-color: var(--secondary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.login-contnet {
+    width: 450px;
+}
+.login-title-logo {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    font-weight: 700;
+    text-align: center;
+}
+.login-text {
+    font-size: 1rem;
+    color: rgb(107 114 128);
+    text-align: center;
+    font-weight: 600;
+}
+
+.login-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b7280;
+    line-height: 1.25rem;
+}
+
+.login-icon {
+    font-size: 20px;
+    cursor: pointer;
+    color: #ffffff;
+}
+.form-input {
+    background-color: rgb(244 244 244) !important;
+}
+.form-input::placeholder {
+    color: #6b7280 !important;
+    font-size: 14px;
+}
+.input-sub-group {
+    background-color: var(--primary-color) !important;
+    border: 1px solid var(--primary-color) !important;
+}
+.forget-link {
+    font-size: 14px;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+.forget-link:hover {
+    text-decoration: underline !important;
+}
+.btn-form {
+    border: 1px solid var(--primary-color) !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    background-color: var(--primary-color) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+.btn-form:hover,
+.btn-form:focus {
+    box-shadow: inset 40rem 0 0 0 rgb(31 60 136) !important;
+    width: 100% !important;
+    transition: all 0.3s;
+    border: 1px solid rgb(31 60 136) !important ;
+}
+
+@media only screen and (min-width: 250px) and (max-width: 575px) {
+    .login-contnet {
+        width: 100%;
+    }
+}
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+    .login-contnet {
+        width: 100%;
+    }
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+}
