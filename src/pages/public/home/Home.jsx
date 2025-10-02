@@ -1,12 +1,72 @@
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { MdOutlineEmail } from 'react-icons/md';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 const Home = () => {
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm();
+
     const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
+    const [token, setToken] = useState('');
+    const location = useLocation();
+    const [loading, setLoading] = useState(false);
+
+    const from = location.state?.from?.pathname || '/dashboard';
+
+    useEffect(() => {
+        if (token) {
+            navigate(from, { replace: true });
+        }
+    }, [token, navigate, from]);
     const togglePassword = () => {
         setShowPassword(!showPassword);
     };
+
+    const onSubmit = async (data) => {
+        setLoading(true);
+
+        const user = {
+            email: data.email.trim(),
+            password: data.password.trim(),
+        };
+
+        fetch(`${import.meta.env.VITE_API_KEY_URL}/api/user/login`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify(user),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                const jwtToken = data?.data?.token;
+                if (jwtToken) {
+                    localStorage.setItem('taskToken', jwtToken);
+                    setToken(jwtToken);
+                    toast.success('Login Successfully!');
+                    reset();
+                    navigate(from, { replace: true });
+                } else {
+                    toast.error(data?.message);
+                    console.log(data?.message);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                toast.error(error.message);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
+
     return (
         <div className="login-contanier">
             <div className="container py-5">
@@ -16,7 +76,10 @@ const Home = () => {
                             <span className="login-title-logo">TASK</span>
                         </h2>
                         <p className="login-text">Login into your account</p>
-                        <form className="mt-5">
+                        <form
+                            className="mt-5"
+                            onSubmit={handleSubmit(onSubmit)}
+                        >
                             <div className="mb-3">
                                 <label
                                     htmlFor="exampleInputEmail1"
@@ -32,11 +95,19 @@ const Home = () => {
                                         id="exampleInputPassword1"
                                         placeholder="Enter email"
                                         name="email"
+                                        {...register('email', {
+                                            required: true,
+                                        })}
                                     />
                                     <span className="input-group-text input-sub-group">
                                         <MdOutlineEmail className="login-icon" />
                                     </span>
                                 </div>
+                                {errors.email && (
+                                    <span className="text-danger error-text">
+                                        Email is required
+                                    </span>
+                                )}
                             </div>
                             <div className="mb-3">
                                 <label
@@ -60,6 +131,9 @@ const Home = () => {
                                         onChange={(e) =>
                                             setUserPass(e.target.value)
                                         }
+                                        {...register('password', {
+                                            required: true,
+                                        })}
                                     />
 
                                     <span className="input-group-text input-sub-group">
@@ -82,6 +156,11 @@ const Home = () => {
                                         )}
                                     </span>
                                 </div>
+                                {errors.password && (
+                                    <span className="text-danger error-text">
+                                        Password is required
+                                    </span>
+                                )}
                             </div>
                             <div className="mb-3 text-end">
                                 <Link
@@ -91,12 +170,12 @@ const Home = () => {
                                     Forgot password?
                                 </Link>
                             </div>
-                            <button
+
+                            <input
                                 type="submit"
                                 className="btn btn-form  w-100"
-                            >
-                                Login
-                            </button>
+                                value={`${loading ? 'Loading...' : 'Login'}`}
+                            />
                         </form>
                     </div>
                 </div>

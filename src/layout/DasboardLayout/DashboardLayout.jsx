@@ -11,15 +11,18 @@ import { dashboardNavName } from './MenuData';
 import { GoDotFill } from 'react-icons/go';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { MdOutlineNotifications, MdOutlineWatchLater } from 'react-icons/md';
+import useLoggedInUser from '../../hooks/useLoggedInUser';
+import Loading from '../../components/loading/Loading';
 const DashboardLayout = () => {
+    const [users, isLoading] = useLoggedInUser();
     const [sidebar, setSidebar] = useState(false);
     const navigate = useNavigate();
 
     const showSidebar = () => setSidebar(!sidebar);
 
     const logOut = () => {
-        localStorage.removeItem('accessToken');
-        navigate('/login');
+        localStorage.removeItem('taskToken');
+        navigate('/');
     };
 
     const [show, setShow] = useState(false);
@@ -27,19 +30,25 @@ const DashboardLayout = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    if (isLoading) {
+        return <Loading />;
+    }
+
     const renderMenu = () =>
-        dashboardNavName?.map((item, index) => (
-            <li key={index} onClick={showSidebar}>
-                <NavLink
-                    to={item.link}
-                    className="nav-link gap-2 nav-link-items"
-                    end
-                >
-                    <i className="m-0 p-0">{item.icon}</i>
-                    <span className="links_name">{item.title}</span>
-                </NavLink>
-            </li>
-        ));
+        dashboardNavName
+            ?.filter((item) => item.user_type.includes(users?.role)) // role-based filtering
+            .map((item) => (
+                <li key={item.id} onClick={showSidebar}>
+                    <NavLink
+                        to={item.link}
+                        className="nav-link gap-2 nav-link-items"
+                        end
+                    >
+                        <i className="m-0 p-0">{item.icon}</i>
+                        <span className="links_name">{item.title}</span>
+                    </NavLink>
+                </li>
+            ));
 
     return (
         <div>
@@ -136,26 +145,30 @@ const DashboardLayout = () => {
                                 >
                                     <span>Hello,</span>{' '}
                                     <span className="fw-bold">
-                                        Sazzad Hossain
+                                        {users?.name || 'N/A'}
                                     </span>
                                 </h3>
                                 <h6
                                     className="user-name text-capitalize text-end px-0 pb-0 pt-1 m-0"
                                     style={{ fontSize: '10px' }}
                                 >
-                                    User
+                                    {users?.role || 'N/A'}
                                 </h6>
                             </div>
                             <div className="bg-transparent dropdown-content position-relative">
                                 <div className="user-img">
                                     <img
-                                        src={Image}
                                         loading="lazy"
                                         width={35}
                                         height={35}
-                                        // src={`${
-                                        //     import.meta.env.VITE_API_KEY_URL
-                                        // }/assets/${users?.employee?.image}`}
+                                        src={
+                                            users?.image
+                                                ? `${
+                                                      import.meta.env
+                                                          .VITE_API_KEY_URL
+                                                  }/${users?.image}`
+                                                : Image
+                                        }
                                         alt="Profile Picture"
                                         // onError={(e) => (e.target.src = Image)}
                                     />
@@ -198,7 +211,7 @@ const DashboardLayout = () => {
                                             <span> Change Password</span>
                                         </Link>
                                     </Dropdown.Item>
-                                    <hr />
+                                    <hr className="mb-1" />
                                     <Dropdown.Item
                                         onClick={logOut}
                                         className="text-danger"

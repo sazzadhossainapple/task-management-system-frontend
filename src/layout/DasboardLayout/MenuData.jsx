@@ -8,20 +8,20 @@ export const dashboardNavName = [
         link: '/dashboard',
         icon: <MdOutlineDashboard />,
         title: 'Dashboard',
-        user_type: '',
+        user_type: ['User', 'Admin'],
     },
     {
         id: 2,
         link: '/dashboard/user',
         icon: <ImUsers />,
         title: 'User',
-        user_type: '',
+        user_type: ['Admin'],
     },
     {
         id: 2,
         link: '/dashboard/task',
         icon: <FaTasks />,
         title: 'Task',
-        user_type: '',
+        user_type: ['User', 'Admin'],
     },
 ];

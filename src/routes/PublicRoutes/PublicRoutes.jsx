@@ -1,11 +1,16 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Error from '../../components/error/Error';
 import { lazy } from 'react';
+import PrivateRoutes from '../PrivateRoutes/PrivateRoutes';
+import AdminRoutes from '../AdminRoutes/AdminRoutes';
 
 const MainLayout = lazy(() => import('../../layout/MainLayout/MainLayout'));
 const Home = lazy(() => import('../../pages/public/home/Home'));
 const ForgotPassword = lazy(() =>
     import('../../pages/public/forgotPassword/ForgotPassword')
+);
+const ResetPassword = lazy(() =>
+    import('../../pages/public/ResetPassword/ResetPassword')
 );
 const DashboardLayout = lazy(() =>
     import('../../layout/DasboardLayout/DashboardLayout')
@@ -15,6 +20,10 @@ const Dashboard = lazy(() =>
 );
 const Task = lazy(() => import('../../pages/dashboard/task/Task'));
 const User = lazy(() => import('../../pages/dashboard/User/User'));
+const Profile = lazy(() => import('../../pages/dashboard/Profile/Profile'));
+const ChangePassword = lazy(() =>
+    import('../../pages/dashboard/Profile/ChangePassword')
+);
 
 export const router = createBrowserRouter([
     {
@@ -24,14 +33,15 @@ export const router = createBrowserRouter([
         children: [
             { path: '/', element: <Home /> },
             { path: '/forgot-password', element: <ForgotPassword /> },
+            { path: '/reset-password', element: <ResetPassword /> },
         ],
     },
     {
         path: '/dashboard',
         element: (
-            // <PrivateRoutes>
-            <DashboardLayout />
-            // </PrivateRoutes>
+            <PrivateRoutes>
+                <DashboardLayout />
+            </PrivateRoutes>
         ),
         errorElement: <Error />,
         children: [
@@ -39,9 +49,22 @@ export const router = createBrowserRouter([
                 path: '/dashboard',
                 element: <Dashboard />,
             },
+
+            {
+                path: '/dashboard/profile',
+                element: <Profile />,
+            },
+            {
+                path: '/dashboard/change-password',
+                element: <ChangePassword />,
+            },
             {
                 path: '/dashboard/user',
-                element: <User />,
+                element: (
+                    <AdminRoutes>
+                        <User />
+                    </AdminRoutes>
+                ),
             },
             {
                 path: '/dashboard/task',
