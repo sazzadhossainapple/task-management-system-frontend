@@ -1,29 +1,29 @@
 import { IoMdAddCircle } from 'react-icons/io';
-import ReactPaginate from 'react-paginate';
-import TaskList from '../../../components/task/TaskList';
+import UserList from '../../../components/user/UserList';
 import { useState } from 'react';
-import TaskAdd from '../../../components/task/TaskAdd';
+import UserAdd from '../../../components/user/UserAdd';
 
-const Task = () => {
-    const [modalAddTask, setModalAddTask] = useState(false);
+const User = () => {
+    const [modalAddUser, setModalAddUser] = useState(false);
 
-    const handleAddTaskClose = () => setModalAddTask(false);
-    const handleAddTaskShow = () => setModalAddTask(true);
+    const handleAddUserClose = () => setModalAddUser(false);
+    const handleAddUserShow = () => setModalAddUser(true);
+
     return (
         <div className="home-content">
             <div className="d-flex justify-content-between align-items-center mb-3">
-                <h3 className="dashboard-title">Task</h3>
+                <h3 className="dashboard-title">User</h3>
                 <div>
-                    <button onClick={handleAddTaskShow} className="btn btns">
-                        <IoMdAddCircle className="add-icon" /> Add Task
+                    <button onClick={handleAddUserShow} className="btn btns">
+                        <IoMdAddCircle className="add-icon" /> Add User
                     </button>
                 </div>
             </div>
             {/* {allNotice?.length === 0 ? (
-                    <div className="min-vh-100 d-flex align-items-center justify-content-center">
-                        No Notice Avaliable
-                    </div>
-                ) : ( */}
+                        <div className="min-vh-100 d-flex align-items-center justify-content-center">
+                            No Notice Avaliable
+                        </div>
+                    ) : ( */}
             <div className="table-responsive">
                 <table className="table table-light table-bordered">
                     <thead>
@@ -38,31 +38,31 @@ const Task = () => {
                                 scope="col"
                                 className="text-center align-middle table-th"
                             >
-                                Assigned User
+                                User
                             </th>
                             <th
                                 scope="col"
                                 className="text-center align-middle table-th"
                             >
-                                Title
+                                Email
                             </th>
                             <th
                                 scope="col"
                                 className="text-center align-middle table-th"
                             >
-                                Due Date
+                                Phone
                             </th>
                             <th
                                 scope="col"
                                 className="text-center align-middle table-th"
                             >
-                                Description
+                                Address
                             </th>
                             <th
                                 scope="col"
                                 className="text-center align-middle table-th"
                             >
-                                Status
+                                Role
                             </th>
 
                             <th
@@ -74,35 +74,34 @@ const Task = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <TaskList />
+                        <UserList />
                     </tbody>
                 </table>
             </div>
             {/* // )} */}
             <div className="mt-4">
                 {/* <ReactPaginate
-                        breakLabel="......."
-                        nextLabel="»"
-                        onPageChange={handlePageClick}
-                        pageRangeDisplayed={5}
-                        pageCount={pageCount}
-                        previousLabel="«"
-                        renderOnZeroPageCount={null}
-                        marginPagesDisplayed={2}
-                        containerClassName="pagination justify-content-end"
-                        pageClassName="page-item"
-                        pageLinkClassName="page-link"
-                        previousClassName="page-item"
-                        previousLinkClassName="page-link"
-                        nextClassName="page-item"
-                        nextLinkClassName="page-link"
-                        activeClassName="active"
-                    /> */}
+                            breakLabel="......."
+                            nextLabel="»"
+                            onPageChange={handlePageClick}
+                            pageRangeDisplayed={5}
+                            pageCount={pageCount}
+                            previousLabel="«"
+                            renderOnZeroPageCount={null}
+                            marginPagesDisplayed={2}
+                            containerClassName="pagination justify-content-end"
+                            pageClassName="page-item"
+                            pageLinkClassName="page-link"
+                            previousClassName="page-item"
+                            previousLinkClassName="page-link"
+                            nextClassName="page-item"
+                            nextLinkClassName="page-link"
+                            activeClassName="active"
+                        /> */}
             </div>
-
-            <TaskAdd show={modalAddTask} handleClose={handleAddTaskClose} />
+            <UserAdd show={modalAddUser} handleClose={handleAddUserClose} />
         </div>
     );
 };
 
-export default Task;
+export default User;

@@ -76,7 +76,7 @@ a {
     color: #212529 !important;
 }
 .modal-title {
-    font-size: 18px;
+    font-size: 18px !important;
     font-weight: 700 !important;
     color: var(--primary-color) !important;
 }
@@ -107,6 +107,17 @@ a {
 .tox:not([dir='rtl']) .tox-statusbar__branding {
     margin-left: 2ch;
     display: none !important;
+}
+
+.form-modal-input {
+    font-weight: 400;
+    font-size: 12px !important;
+    color: #555555;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.label-text {
+    font-size: 12px !important;
+    font-weight: 600 !important;
 }
 
 @media only screen and (min-width: 250px) and (max-width: 575px) {

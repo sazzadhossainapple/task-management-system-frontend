@@ -1,4 +1,5 @@
 import { FaTasks } from 'react-icons/fa';
+import { ImUsers } from 'react-icons/im';
 import { MdOutlineDashboard } from 'react-icons/md';
 
 export const dashboardNavName = [
@@ -7,6 +8,13 @@ export const dashboardNavName = [
         link: '/dashboard',
         icon: <MdOutlineDashboard />,
         title: 'Dashboard',
+        user_type: '',
+    },
+    {
+        id: 2,
+        link: '/dashboard/user',
+        icon: <ImUsers />,
+        title: 'User',
         user_type: '',
     },
     {

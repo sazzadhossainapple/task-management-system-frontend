@@ -13,8 +13,8 @@ const DashboardLayout = lazy(() =>
 const Dashboard = lazy(() =>
     import('../../pages/dashboard/Dashboard/Dashboard')
 );
-
 const Task = lazy(() => import('../../pages/dashboard/task/Task'));
+const User = lazy(() => import('../../pages/dashboard/User/User'));
 
 export const router = createBrowserRouter([
     {
@@ -38,6 +38,10 @@ export const router = createBrowserRouter([
             {
                 path: '/dashboard',
                 element: <Dashboard />,
+            },
+            {
+                path: '/dashboard/user',
+                element: <User />,
             },
             {
                 path: '/dashboard/task',
