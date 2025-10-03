@@ -1,4 +1,3 @@
-import { AiOutlineEye } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import ConfirmationDialog from '../confirmationDialog/ConfirmationDialog';
@@ -6,11 +5,20 @@ import { useState } from 'react';
 import TaskUpdate from './TaskUpdate';
 import Image from '../../assets/image/defualtImages.png';
 import moment from 'moment';
+import { DeleteRequest } from '../../api/DeleteRequest';
+import TaskStatusUpdate from './TaskStatusUpdate';
 
 const TaskList = ({ data, slNo, getPaginationList, users, allUsers }) => {
+    const { title } = data;
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [modalUpdateTask, setModalUpdateTask] = useState(false);
+    const [modalUpateStatusTask, setModalUpateStatusTask] = useState(false);
     const [updateTask, setUpdateTask] = useState(null);
+    const [updateStatusTask, setUpdateStatusTask] = useState(null);
+
+    // update status
+    const handleUpdateStatusTaskClose = () => setModalUpateStatusTask(false);
+    const handleUpdateStatusTaskShow = () => setModalUpateStatusTask(true);
 
     // update
     const handleUpdateTaskClose = () => setModalUpdateTask(false);
@@ -26,7 +34,16 @@ const TaskList = ({ data, slNo, getPaginationList, users, allUsers }) => {
     };
 
     // delete action
-    const handleConfirmAction = () => {};
+
+    const handleConfirmAction = async () => {
+        const api = `${import.meta.env.VITE_API_KEY_URL}/api/task/${data?._id}`;
+        await DeleteRequest(
+            api,
+            getPaginationList,
+            title,
+            handleCloseConfirmation
+        );
+    };
     return (
         <>
             <tr>
@@ -82,6 +99,10 @@ const TaskList = ({ data, slNo, getPaginationList, users, allUsers }) => {
                     <div className="d-flex align-items-center justify-content-center gap-2">
                         <button
                             type="button"
+                            onClick={() => {
+                                handleUpdateStatusTaskShow();
+                                setUpdateStatusTask(data);
+                            }}
                             className="btn btn-sm btn-primary text-white table-btn fw-semibold d-flex align-items-center gap-1"
                             style={{ fontSize: '12px' }}
                         >
@@ -119,7 +140,7 @@ const TaskList = ({ data, slNo, getPaginationList, users, allUsers }) => {
                 show={showConfirmation}
                 onClose={handleCloseConfirmation}
                 onConfirm={handleConfirmAction}
-                name=""
+                name={title || 'N/A'}
             />
             <TaskUpdate
                 show={modalUpdateTask}
@@ -127,6 +148,12 @@ const TaskList = ({ data, slNo, getPaginationList, users, allUsers }) => {
                 updateTask={updateTask}
                 getPaginationList={getPaginationList}
                 allUsers={allUsers}
+            />
+            <TaskStatusUpdate
+                show={modalUpateStatusTask}
+                handleClose={handleUpdateStatusTaskClose}
+                updateStatusTask={updateStatusTask}
+                getPaginationList={getPaginationList}
             />
         </>
     );

@@ -1,5 +1,4 @@
 import { IoMdAddCircle } from 'react-icons/io';
-import ReactPaginate from 'react-paginate';
 import TaskList from '../../../components/task/TaskList';
 import { useEffect, useRef, useState } from 'react';
 import TaskAdd from '../../../components/task/TaskAdd';
@@ -8,7 +7,6 @@ import Loading from '../../../components/loading/Loading';
 import { GetRequest } from '../../../api/GetRequest';
 import Pagination from '../../../components/Pagination/Pagination';
 import useLoggedInUser from '../../../hooks/useLoggedInUser';
-import { all } from 'axios';
 
 const Task = () => {
     const [users] = useLoggedInUser();
@@ -20,7 +18,8 @@ const Task = () => {
     const currentPage = useRef(1);
     const [isLoading, setIsLoading] = useState(true);
     const [status, setStatus] = useState('');
-    const [date, setDate] = useState('');
+    const [fromDate, setFromDate] = useState('');
+    const [toDate, setToDate] = useState('');
 
     useEffect(() => {
         const debouncedFetch = debounce(() => {
@@ -32,7 +31,7 @@ const Task = () => {
         return () => {
             debouncedFetch.cancel();
         };
-    }, [limit, status, date]);
+    }, [limit, status, fromDate, toDate]);
 
     useEffect(() => {
         getByUsers();
@@ -44,7 +43,7 @@ const Task = () => {
     const getPaginationList = async () => {
         const url = `${import.meta.env.VITE_API_KEY_URL}/api/task?page=${
             currentPage.current
-        }&limit=${limit}&status=${status}&dueDate=${date}`;
+        }&limit=${limit}&status=${status}&fromDate=${fromDate}&toDate=${toDate}`;
 
         try {
             const data = await GetRequest({
@@ -97,25 +96,30 @@ const Task = () => {
         currentPage.current = e.selected + 1;
         getPaginationList();
     };
-
+    const resetButton = () => {
+        setStatus('');
+        setFromDate('');
+        setToDate('');
+        getPaginationList();
+    };
     if (isLoading) {
         return <Loading />;
-    }
-
-    function resetButton() {
-        setStatus('');
-        setDate('');
     }
 
     return (
         <div className="home-content">
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h3 className="dashboard-title">Task</h3>
-                <div>
-                    <button onClick={handleAddTaskShow} className="btn btns">
-                        <IoMdAddCircle className="add-icon" /> Add Task
-                    </button>
-                </div>
+                {users?.role === 'Admin' && (
+                    <div>
+                        <button
+                            onClick={handleAddTaskShow}
+                            className="btn btns"
+                        >
+                            <IoMdAddCircle className="add-icon" /> Add Task
+                        </button>
+                    </div>
+                )}
             </div>
 
             <div className="row g-3">
@@ -129,9 +133,7 @@ const Task = () => {
                         onChange={(e) => setStatus(e.target.value)}
                         value={status}
                     >
-                        <option value="" selected>
-                            Select Status
-                        </option>
+                        <option value="">Select Status</option>
                         <option value="Pending">Pending</option>
                         <option value="In Progress">In Progress</option>
                         <option value="Completed">Completed</option>
@@ -139,14 +141,28 @@ const Task = () => {
                 </div>
                 <div className="col-md-2">
                     <label className="mb-2 label-text d-flex gap-1">
-                        Due Date
+                        From Date
                     </label>
                     <input
                         type="date"
                         className="form-control px-3 py-2 form-modal-input"
                         placeholder="Enter Due Date"
-                        onChange={(e) => setDate(e.target.value)}
-                        value={date}
+                        onChange={(e) => setFromDate(e.target.value)}
+                        value={fromDate}
+                        max={toDate || undefined}
+                    />
+                </div>
+                <div className="col-md-2">
+                    <label className="mb-2 label-text d-flex gap-1">
+                        To Date
+                    </label>
+                    <input
+                        type="date"
+                        className="form-control px-3 py-2 form-modal-input"
+                        placeholder="Enter Due Date"
+                        onChange={(e) => setToDate(e.target.value)}
+                        value={toDate}
+                        min={fromDate || undefined}
                     />
                 </div>
                 <div className="col-md-2" style={{ marginTop: '43px' }}>

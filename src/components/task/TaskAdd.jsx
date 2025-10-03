@@ -1,6 +1,46 @@
 import { Modal } from 'react-bootstrap';
+import { PostRequest } from '../../api/PostRequest';
+import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 
 const TaskAdd = ({ show, handleClose, getPaginationList, allUsers }) => {
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm();
+
+    const [loading, setLoading] = useState(false);
+    const onSubmit = async (data) => {
+        setLoading(true);
+
+        const apiData = {
+            title: data.title.trim(),
+            description: data.description.trim(),
+            assignedUser: data.assignedUser.trim(),
+            dueDate: data.dueDate.trim(),
+        };
+
+        const api = `${import.meta.env.VITE_API_KEY_URL}/api/task`;
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: `Bearer ${localStorage.getItem('taskToken')}`,
+            },
+        };
+
+        await PostRequest(
+            apiData,
+            config,
+            api,
+            setLoading,
+            reset,
+            handleClose,
+            getPaginationList
+        );
+    };
     return (
         <Modal
             show={show}
@@ -19,7 +59,7 @@ const TaskAdd = ({ show, handleClose, getPaginationList, allUsers }) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body className="px-4 form-body">
-                <form className="row g-3">
+                <form className="row g-3" onSubmit={handleSubmit(onSubmit)}>
                     <div className="col-md-6">
                         <label className="mb-2 label-text d-flex gap-1 ">
                             Title
@@ -28,9 +68,14 @@ const TaskAdd = ({ show, handleClose, getPaginationList, allUsers }) => {
                         <input
                             type="text"
                             className="form-control px-3 py-2 form-modal-input"
-                            name="title"
                             placeholder="Enter Title"
+                            {...register('title', { required: true })}
                         />
+                        {errors.title && (
+                            <span className="text-danger">
+                                Title is required
+                            </span>
+                        )}
                     </div>
                     <div className="col-md-6">
                         <label className="mb-2 label-text d-flex gap-1 ">
@@ -40,8 +85,13 @@ const TaskAdd = ({ show, handleClose, getPaginationList, allUsers }) => {
                         <input
                             type="date"
                             className="form-control px-3 py-2 form-modal-input"
-                            name="dueDate"
+                            {...register('dueDate', { required: true })}
                         />
+                        {errors.dueDate && (
+                            <span className="text-danger">
+                                Due Date is required
+                            </span>
+                        )}
                     </div>
                     <div className="col-12">
                         <label className="mb-2 label-text d-flex gap-1 ">
@@ -52,6 +102,7 @@ const TaskAdd = ({ show, handleClose, getPaginationList, allUsers }) => {
                             className="form-select px-3 py-2 form-modal-input"
                             name="assignedUser"
                             placeholder="Select Type"
+                            {...register('assignedUser', { required: true })}
                         >
                             <option selected>Select User</option>
                             {allUsers?.map((user) => (
@@ -60,12 +111,16 @@ const TaskAdd = ({ show, handleClose, getPaginationList, allUsers }) => {
                                 </option>
                             ))}
                         </select>
+                        {errors.assignedUser && (
+                            <span className="text-danger">
+                                User is required
+                            </span>
+                        )}
                     </div>
 
                     <div className="col-12">
                         <label className="mb-2 label-text d-flex gap-1 ">
                             Descripton
-                            <span className="text-danger">*</span>
                         </label>
 
                         <textarea
@@ -73,13 +128,15 @@ const TaskAdd = ({ show, handleClose, getPaginationList, allUsers }) => {
                             id=""
                             className="form-control px-3 py-2 form-modal-input"
                             placeholder="Enter Description"
+                            {...register('description')}
                         ></textarea>
                     </div>
 
                     <div className="mt-4 d-flex justify-content-center">
                         <input
                             type="submit"
-                            value="Submit"
+                            disabled={loading}
+                            value={loading ? 'Adding...' : 'Add Task'}
                             className="btn btns"
                         />
                     </div>

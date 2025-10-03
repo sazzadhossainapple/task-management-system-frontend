@@ -8,7 +8,6 @@ const UserUpdate = ({ show, handleClose, updateUser, getPaginationList }) => {
         handleSubmit,
         reset,
         setValue,
-        watch,
         formState: { errors },
     } = useForm();
 
@@ -159,7 +158,7 @@ const UserUpdate = ({ show, handleClose, updateUser, getPaginationList }) => {
                         <input
                             type="submit"
                             disabled={loading}
-                            value={loading ? 'Adding...' : 'Add User'}
+                            value={loading ? 'Adding...' : 'Update User'}
                             className="btn btns"
                         />
                     </div>

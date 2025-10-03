@@ -7,8 +7,6 @@ const UserAdd = ({ show, handleClose, getPaginationList }) => {
         register,
         handleSubmit,
         reset,
-        setValue,
-        watch,
         formState: { errors },
     } = useForm();
 
