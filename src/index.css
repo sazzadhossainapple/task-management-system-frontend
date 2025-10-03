@@ -119,8 +119,15 @@ a {
     font-size: 12px !important;
     font-weight: 600 !important;
 }
-.error-text{
+.error-text {
     font-size: 12px;
+}
+.table-user-img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
 }
 @media only screen and (min-width: 250px) and (max-width: 575px) {
 }

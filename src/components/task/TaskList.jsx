@@ -4,8 +4,10 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 import ConfirmationDialog from '../confirmationDialog/ConfirmationDialog';
 import { useState } from 'react';
 import TaskUpdate from './TaskUpdate';
+import Image from '../../assets/image/defualtImages.png';
+import moment from 'moment';
 
-const TaskList = () => {
+const TaskList = ({ data, slNo, getPaginationList, users, allUsers }) => {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [modalUpdateTask, setModalUpdateTask] = useState(false);
     const [updateTask, setUpdateTask] = useState(null);
@@ -28,53 +30,88 @@ const TaskList = () => {
     return (
         <>
             <tr>
-                <td className="text-center align-middle table-text">1</td>
-                <td className="text-center align-middle table-text">
-                    Sazzad Hossain
+                <td className="text-center align-middle table-text">{slNo}</td>
+                <td className=" align-middle table-text">
+                    <div className="d-flex align-items-center gap-2">
+                        <img
+                            src={
+                                data?.assignedUser?.image
+                                    ? `${import.meta.env.VITE_API_KEY_URL}/${
+                                          data?.assignedUser?.image
+                                      }`
+                                    : Image
+                            }
+                            alt="user"
+                            className="table-user-img"
+                        />
+                        <div>
+                            <span className="fw-semibold">
+                                {data?.assignedUser?.name || 'N/A'}
+                            </span>
+                            <br />
+                            <span>{data?.assignedUser?.email || 'N/A'}</span>
+                        </div>
+                    </div>
                 </td>
                 <td className="text-center align-middle table-text">
-                    New Task
+                    {data?.title || 'N/A'}
                 </td>
                 <td className="text-center align-middle table-text">
-                    {' '}
-                    10-10-2022
+                    {data?.dueDate
+                        ? moment(data?.dueDate).format('DD MMMM YYYY')
+                        : 'N/A'}
                 </td>
-                <td className="text-center align-middle table-text">datoeo</td>
-                <td className="text-center align-middle table-text">Pending</td>
+                <td className="text-center align-middle table-text">
+                    {data?.description || 'N/A'}
+                </td>
+                <td className="text-center align-middle table-text">
+                    <div
+                        className={`fw-semibold badge text-white ${
+                            data?.status === 'Completed'
+                                ? 'bg-success'
+                                : data?.status === 'Pending'
+                                ? 'bg-secondary'
+                                : 'bg-warning'
+                        }`}
+                    >
+                        {data?.status || 'N/A'}
+                    </div>
+                </td>
 
                 <td className="text-center align-middle table-text">
                     <div className="d-flex align-items-center justify-content-center gap-2">
                         <button
                             type="button"
-                            className="btn btn-sm btn-info text-white table-btn fw-semibold d-flex align-items-center gap-1"
+                            className="btn btn-sm btn-primary text-white table-btn fw-semibold d-flex align-items-center gap-1"
                             style={{ fontSize: '12px' }}
                         >
-                            <AiOutlineEye />
-                            <span>View</span>
+                            <span>Update Status</span>
                         </button>
-
-                        <button
-                            type="button"
-                            onClick={() => {
-                                handleUpdateTaskShow();
-                                setUpdateTask(null);
-                            }}
-                            className="btn btn-sm btn-secondary text-white table-btn fw-semibold d-flex align-items-center gap-1"
-                            style={{ fontSize: '12px' }}
-                        >
-                            <FiEdit />
-                            <span>Edit</span>
-                        </button>
-
-                        <button
-                            type="button"
-                            onClick={handleShowConfirmation}
-                            className="btn btn-sm btn-danger text-white table-btn fw-semibold d-flex align-items-center gap-1"
-                            style={{ fontSize: '12px' }}
-                        >
-                            <RiDeleteBinLine />
-                            <span>Delete</span>
-                        </button>
+                        {users?.role === 'Admin' && (
+                            <>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        handleUpdateTaskShow();
+                                        setUpdateTask(data);
+                                    }}
+                                    className="btn btn-sm btn-secondary text-white table-btn fw-semibold d-flex align-items-center gap-1"
+                                    style={{ fontSize: '12px' }}
+                                >
+                                    <FiEdit />
+                                    <span>Edit</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={handleShowConfirmation}
+                                    className="btn btn-sm btn-danger text-white table-btn fw-semibold d-flex align-items-center gap-1"
+                                    style={{ fontSize: '12px' }}
+                                >
+                                    <RiDeleteBinLine />
+                                    <span>Delete</span>
+                                </button>
+                            </>
+                        )}
                     </div>
                 </td>
             </tr>
@@ -88,6 +125,8 @@ const TaskList = () => {
                 show={modalUpdateTask}
                 handleClose={handleUpdateTaskClose}
                 updateTask={updateTask}
+                getPaginationList={getPaginationList}
+                allUsers={allUsers}
             />
         </>
     );

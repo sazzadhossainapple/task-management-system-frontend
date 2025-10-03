@@ -1,6 +1,54 @@
+import { useState } from 'react';
 import { Modal } from 'react-bootstrap';
-import { toast } from 'react-hot-toast';
-const UserAdd = ({ show, handleClose }) => {
+import { useForm } from 'react-hook-form';
+import { PostRequest } from '../../api/PostRequest';
+const UserAdd = ({ show, handleClose, getPaginationList }) => {
+    const {
+        register,
+        handleSubmit,
+        reset,
+        setValue,
+        watch,
+        formState: { errors },
+    } = useForm();
+
+    const [loading, setLoading] = useState(false);
+    const onSubmit = async (data) => {
+        setLoading(true);
+
+        const formData = new FormData();
+
+        formData.append('name', data.name.trim());
+        formData.append('email', data.email.trim());
+        formData.append('password', data.password.trim());
+        formData.append('phone', data.phone.trim());
+        formData.append('address', data.address.trim());
+        formData.append('role', data.role.trim());
+
+        if (data?.image && data?.image[0]) {
+            formData.append('file', data.image[0]);
+        }
+
+        const api = `${import.meta.env.VITE_API_KEY_URL}/api/user`;
+
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                authorization: `Bearer ${localStorage.getItem('taskToken')}`,
+            },
+        };
+
+        await PostRequest(
+            formData,
+            config,
+            api,
+            setLoading,
+            reset,
+            handleClose,
+            getPaginationList
+        );
+    };
+
     return (
         <Modal
             show={show}
@@ -19,7 +67,7 @@ const UserAdd = ({ show, handleClose }) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body className="px-4 form-body">
-                <form className="row g-3">
+                <form className="row g-3" onSubmit={handleSubmit(onSubmit)}>
                     <div className="col-md-6">
                         <label className="mb-2 label-text d-flex gap-1 ">
                             Name
@@ -28,9 +76,16 @@ const UserAdd = ({ show, handleClose }) => {
                         <input
                             type="text"
                             className="form-control px-3 py-2 form-modal-input"
-                            name="name"
                             placeholder="Enter name"
+                            {...register('name', {
+                                required: true,
+                            })}
                         />
+                        {errors.name && (
+                            <span className="text-danger error-text">
+                                Name is required
+                            </span>
+                        )}
                     </div>
                     <div className="col-md-6">
                         <label className="mb-2 label-text d-flex gap-1 ">
@@ -40,9 +95,35 @@ const UserAdd = ({ show, handleClose }) => {
                         <input
                             type="email"
                             className="form-control px-3 py-2 form-modal-input"
-                            name="email"
                             placeholder="Enter email"
+                            {...register('email', {
+                                required: true,
+                            })}
                         />
+                        {errors.email && (
+                            <span className="text-danger error-text">
+                                Email is required
+                            </span>
+                        )}
+                    </div>
+                    <div className="col-md-6">
+                        <label className="mb-2 label-text d-flex gap-1 ">
+                            Password
+                            <span className="text-danger">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            className="form-control px-3 py-2 form-modal-input"
+                            placeholder="Enter password"
+                            {...register('password', {
+                                required: true,
+                            })}
+                        />
+                        {errors.password && (
+                            <span className="text-danger error-text">
+                                Password is required
+                            </span>
+                        )}
                     </div>
                     <div className="col-md-6">
                         <label className="mb-2 label-text d-flex gap-1 ">
@@ -51,8 +132,8 @@ const UserAdd = ({ show, handleClose }) => {
                         <input
                             type="text"
                             className="form-control px-3 py-2 form-modal-input"
-                            name="phone"
                             placeholder="Enter phone"
+                            {...register('phone')}
                         />
                     </div>
                     <div className="col-md-6">
@@ -62,21 +143,11 @@ const UserAdd = ({ show, handleClose }) => {
                         <input
                             type="text"
                             className="form-control px-3 py-2 form-modal-input"
-                            name="address"
                             placeholder="Enter address"
+                            {...register('address')}
                         />
                     </div>
 
-                    <div className="col-md-6">
-                        <label className="mb-2 label-text d-flex gap-1 ">
-                            Image
-                        </label>
-                        <input
-                            type="file"
-                            className="form-control px-3 py-2 form-modal-input"
-                            name="file"
-                        />
-                    </div>
                     <div className="col-md-6">
                         <label className="mb-2 label-text d-flex gap-1 ">
                             User Type
@@ -84,21 +155,38 @@ const UserAdd = ({ show, handleClose }) => {
                         </label>
                         <select
                             className="form-select px-3 py-2 form-modal-input"
-                            name="assignedUser"
                             placeholder="Select Type"
+                            {...register('role', {
+                                required: true,
+                            })}
                         >
-                            <option selected disabled>
-                                Select Type
+                            <option value="User" selected>
+                                User
                             </option>
-                            <option value="User">User</option>
                             <option value="Admin">Admin</option>
                         </select>
+                        {errors.role && (
+                            <span className="text-danger error-text">
+                                Role is required
+                            </span>
+                        )}
+                    </div>
+                    <div className="col-12">
+                        <label className="mb-2 label-text d-flex gap-1 ">
+                            Image
+                        </label>
+                        <input
+                            type="file"
+                            className="form-control px-3 py-2 form-modal-input"
+                            {...register('image')}
+                        />
                     </div>
 
                     <div className="mt-4 d-flex justify-content-center">
                         <input
                             type="submit"
-                            value="Submit"
+                            disabled={loading}
+                            value={loading ? 'Adding...' : 'Add User'}
                             className="btn btns"
                         />
                     </div>

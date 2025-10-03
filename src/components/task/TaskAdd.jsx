@@ -1,7 +1,6 @@
 import { Modal } from 'react-bootstrap';
-import { toast } from 'react-hot-toast';
 
-const TaskAdd = ({ show, handleClose }) => {
+const TaskAdd = ({ show, handleClose, getPaginationList, allUsers }) => {
     return (
         <Modal
             show={show}
@@ -54,7 +53,12 @@ const TaskAdd = ({ show, handleClose }) => {
                             name="assignedUser"
                             placeholder="Select Type"
                         >
-                            <option selected>Select Type</option>
+                            <option selected>Select User</option>
+                            {allUsers?.map((user) => (
+                                <option key={user._id} value={user._id}>
+                                    {user.name}
+                                </option>
+                            ))}
                         </select>
                     </div>
 
