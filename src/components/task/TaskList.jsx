@@ -7,6 +7,8 @@ import Image from '../../assets/image/defualtImages.png';
 import moment from 'moment';
 import { DeleteRequest } from '../../api/DeleteRequest';
 import TaskStatusUpdate from './TaskStatusUpdate';
+import { Tooltip } from 'react-tooltip';
+import { FaTasks } from 'react-icons/fa';
 
 const TaskList = ({ data, slNo, getPaginationList, users, allUsers }) => {
     const { title } = data;
@@ -103,10 +105,12 @@ const TaskList = ({ data, slNo, getPaginationList, users, allUsers }) => {
                                 handleUpdateStatusTaskShow();
                                 setUpdateStatusTask(data);
                             }}
+                            data-tooltip-id="update-task-tooltip"
+                            data-tooltip-content="Update Task Status"
                             className="btn btn-sm btn-primary text-white table-btn fw-semibold d-flex align-items-center gap-1"
                             style={{ fontSize: '12px' }}
                         >
-                            <span>Update Status</span>
+                            <FaTasks />
                         </button>
                         {users?.role === 'Admin' && (
                             <>
@@ -116,24 +120,29 @@ const TaskList = ({ data, slNo, getPaginationList, users, allUsers }) => {
                                         handleUpdateTaskShow();
                                         setUpdateTask(data);
                                     }}
+                                    data-tooltip-id="edit-tooltip"
+                                    data-tooltip-content="Update Task"
                                     className="btn btn-sm btn-secondary text-white table-btn fw-semibold d-flex align-items-center gap-1"
                                     style={{ fontSize: '12px' }}
                                 >
                                     <FiEdit />
-                                    <span>Edit</span>
                                 </button>
                                 <button
                                     type="button"
                                     onClick={handleShowConfirmation}
+                                    data-tooltip-id="delete-tooltip"
+                                    data-tooltip-content="Delete Task"
                                     className="btn btn-sm btn-danger text-white table-btn fw-semibold d-flex align-items-center gap-1"
                                     style={{ fontSize: '12px' }}
                                 >
                                     <RiDeleteBinLine />
-                                    <span>Delete</span>
                                 </button>
                             </>
                         )}
                     </div>
+                    <Tooltip id="edit-tooltip" />
+                    <Tooltip id="delete-tooltip" />
+                    <Tooltip id="update-task-tooltip" />
                 </td>
             </tr>
             <ConfirmationDialog

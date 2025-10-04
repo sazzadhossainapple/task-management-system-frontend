@@ -1,4 +1,3 @@
-import { AiOutlineEye } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import ConfirmationDialog from '../confirmationDialog/ConfirmationDialog';
@@ -6,6 +5,7 @@ import UserUpdate from './UserUpdate';
 import { useState } from 'react';
 import Image from '../../assets/image/defualtImages.png';
 import { DeleteRequest } from '../../api/DeleteRequest';
+import { Tooltip } from 'react-tooltip';
 
 const UserList = ({ user, slNo, getPaginationList, users }) => {
     const { name } = user;
@@ -85,25 +85,29 @@ const UserList = ({ user, slNo, getPaginationList, users }) => {
                                 handleUpdateUserShow();
                                 setUpdateUser(user);
                             }}
+                            data-tooltip-id="edit-tooltip"
+                            data-tooltip-content="Update User"
                             className="btn btn-sm btn-secondary text-white table-btn fw-semibold d-flex align-items-center gap-1"
                             style={{ fontSize: '12px' }}
                         >
                             <FiEdit />
-                            <span>Edit</span>
                         </button>
 
                         {user?.role !== 'Admin' && (
                             <button
                                 type="button"
                                 onClick={handleShowConfirmation}
+                                data-tooltip-id="delete-tooltip"
+                                data-tooltip-content="Delete User"
                                 className="btn btn-sm btn-danger text-white table-btn fw-semibold d-flex align-items-center gap-1"
                                 style={{ fontSize: '12px' }}
                             >
                                 <RiDeleteBinLine />
-                                <span>Delete</span>
                             </button>
                         )}
                     </div>
+                    <Tooltip id="edit-tooltip" />
+                    <Tooltip id="delete-tooltip" />
                 </td>
             </tr>
             <ConfirmationDialog
