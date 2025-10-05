@@ -6,7 +6,7 @@ import { debounce } from 'lodash';
 import { GetRequest } from '../../../api/GetRequest';
 import Loading from '../../../components/loading/Loading';
 import ReactPaginate from 'react-paginate';
-import Pagination from '../../../components/Pagination/Pagination';
+import Pagination from '../../../components/pagination/Pagination';
 import useLoggedInUser from '../../../hooks/useLoggedInUser';
 
 const User = () => {
