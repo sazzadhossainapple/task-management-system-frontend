@@ -18,12 +18,12 @@ const DashboardLayout = lazy(() =>
 const Dashboard = lazy(() =>
     import('../../pages/dashboard/Dashboard/Dashboard')
 );
-const Task = lazy(() => import('../../pages/dashboard/task/Task'));
 const User = lazy(() => import('../../pages/dashboard/User/User'));
 const Profile = lazy(() => import('../../pages/dashboard/Profile/Profile'));
 const ChangePassword = lazy(() =>
     import('../../pages/dashboard/Profile/ChangePassword')
 );
+const Task = lazy(() => import('../../pages/dashboard/Task/Task'));
 
 export const router = createBrowserRouter([
     {

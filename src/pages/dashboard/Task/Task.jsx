@@ -5,8 +5,8 @@ import TaskAdd from '../../../components/task/TaskAdd';
 import { debounce } from 'lodash';
 import Loading from '../../../components/loading/Loading';
 import { GetRequest } from '../../../api/GetRequest';
-import Pagination from '../../../components/Pagination/Pagination';
 import useLoggedInUser from '../../../hooks/useLoggedInUser';
+import Pagination from '../../../components/pagination/Pagination';
 
 const Task = () => {
     const [users] = useLoggedInUser();
